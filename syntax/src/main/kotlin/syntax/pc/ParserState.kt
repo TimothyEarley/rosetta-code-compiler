@@ -11,15 +11,14 @@ sealed class ParserState<out T> {
 	sealed class Error(msgBuilder: () -> String) : ParserState<Nothing>() {
 		val msg: String by lazy(msgBuilder)
 
-		data class Expected(val expected: Token.Type, val actual: Token) :
+		data class Expected(val context: String, val expected: Token.Type, val actual: Token) :
 			Error({ "Expected $expected but got $actual" })
 
 		data class Neither(val options: List<Expected>) : Error({
-			"All failed: \n${options
-				.sortedWith(
-					compareBy({ -it.actual.line }, { -it.actual.col })
-				)
-				.joinToString(separator = "\n") { it.msg }}"
+			options.maxWith(
+					compareBy({ it.actual.line }, { it.actual.col })
+				)!!
+				.run { "(${actual.line}, ${actual.col}) $context: Expecting '${expected.findSymbol(null)}', found '${actual.type.findSymbol(actual)}'\n" }
 		})
 
 		infix fun neither(other: Error): Error = Neither(
@@ -58,3 +57,37 @@ infix fun <A, B> ParserState<A>.flatMap(f: (ParserState.Ok<A>) -> ParserState<B>
 		is ParserState.Ok -> f(this)
 		is ParserState.Error -> this
 	}
+
+
+fun Token.Type.findSymbol(token: Token?): String = when (this) {
+	Token.Type.Identifier -> token?.value ?: "An identifier"
+	Token.Type.Integer -> token?.value ?: "An Integer"
+	Token.Type.StringType -> token?.value ?: "A String"
+	Token.Type.EndOfInput -> "End of input"
+	Token.Type.KeywordIf -> "if"
+	Token.Type.KeywordElse -> "else"
+	Token.Type.KeywordWhile -> "while"
+	Token.Type.KeywordPrint -> "print"
+	Token.Type.KeywordPutc -> "putc"
+	Token.Type.OpMultiply -> "*"
+	Token.Type.OpDivide -> "/"
+	Token.Type.OpMod -> "%"
+	Token.Type.OpAdd -> "+"
+	Token.Type.OpSubtract -> "-"
+	Token.Type.OpLessEqual -> "<="
+	Token.Type.OpLess -> "<"
+	Token.Type.OpGreaterEqual -> ">="
+	Token.Type.OpGreater -> ">"
+	Token.Type.OpEqual -> "=="
+	Token.Type.OpAssign -> "="
+	Token.Type.OpNotEqual -> "!="
+	Token.Type.OpNot -> "!"
+	Token.Type.OpAnd -> "&&"
+	Token.Type.OpOr -> "||"
+	Token.Type.LeftParen -> "("
+	Token.Type.RightParen -> ")"
+	Token.Type.LeftBrace -> "{"
+	Token.Type.RightBrace -> "}"
+	Token.Type.Semicolon -> ";"
+	Token.Type.Comma -> ","
+}

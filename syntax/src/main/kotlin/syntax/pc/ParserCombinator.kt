@@ -13,7 +13,7 @@ data class ParserInputState(
 		result = tokens.first()
 	)
 
-	fun error(expected: Token.Type) = ParserState.Error.Expected(expected, tokens.first()).let {
+	fun ParserContext.parseError(expected: Token.Type) = ParserState.Error.Expected(context, expected, tokens.first()).let {
 		if (skippedError != null) it neither skippedError
 		else it
 	}
@@ -25,9 +25,9 @@ fun <T> Parser<T>.run(tokens: Sequence<Token>): ParserState<T> = this.value.invo
 	ParserInputState(tokens = tokens)
 )
 
-fun t(type: Token.Type): Parser<Token> = lazyOf(fun ParserInputState.() =
+fun ParserContext.t(type: Token.Type): Parser<Token> = lazyOf(fun ParserInputState.() =
 	if (tokens.first().type == type) ok()
-	else error(type))
+	else parseError(type))
 
 
 fun <T> many(parser: Parser<T>): Parser<List<T>> = lazyOf(fun ParserInputState.(): ParserState<List<T>> {
@@ -88,6 +88,11 @@ infix operator fun Parser<SKIP>.plus(other: Parser<SKIP>): Parser<SKIP> =
 	lazyOf(fun ParserInputState.(): ParserState<SKIP> = this@plus.value(this) flatMap { a ->
 		other.value(a.next)
 	})
+
+
+data class ParserContext(val context: String)
+fun <T> context(name: String, f: ParserContext.() -> Parser<T>): Parser<T> =
+	ParserContext(name).run(f)
 
 // helper
 inline fun forever(f: () -> Unit): Nothing {

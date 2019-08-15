@@ -1,5 +1,6 @@
 package syntax
 
+import syntax.pc.ParserState
 import syntax.pc.fold
 import syntax.pc.run
 import java.io.File
@@ -11,12 +12,10 @@ fun main(args: Array<String>) {
 	println(syntax(source))
 }
 
-
-@Throws()
 fun syntax(input: String): String {
 	val tokens = input.lineSequence().map(::readToken)
 	return Grammer.parser.run(tokens).fold(
-		{ throw error(it.msg) },
+		ParserState.Error::msg,
 		AST::toFlatString
 	)
 }
