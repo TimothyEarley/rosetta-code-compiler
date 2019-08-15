@@ -6,10 +6,11 @@ import io.kotlintest.specs.FreeSpec
 import io.kotlintest.tables.row
 import lexer.lexer
 import syntax.syntax
-import tests.cases.allSymbols
-import tests.cases.helloWorld
-import tests.cases.phoenixNumber
+import tests.cases.*
 import java.util.*
+
+//TODO this overwrites spaces in strings
+private fun String.normaliseWhitespace() = replace(" {2,}".toRegex(), " ")
 
 fun testCase(
 	name: String,
@@ -21,8 +22,8 @@ fun testCase(
 ) = row(
 	name,
 	source.trimStart('\n'),
-	lex.trim('\n'),
-	parse.trimStart('\n'),
+	lex.trim('\n').normaliseWhitespace(),
+	parse.trimStart('\n').normaliseWhitespace(),
 	gen?.trim('\n'),
 	out?.trim('\n')
 )
@@ -32,16 +33,23 @@ class Test : FreeSpec({
 	forall(
 		helloWorld,
 		phoenixNumber,
-		allSymbols
+		allSymbols,
+		testCase4,
+		count,
+		doors,
+		negatives,
+		deep,
+		gcd,
+		mandelbrot
 	) { name, source, lex, parse, gen, out ->
 		//TODO gradle test runner does not support nested tests - use IntelliJ
 		name - {
 			"lexer"  {
-				lexer(source) shouldBe lex
+				lexer(source).normaliseWhitespace() shouldBe lex
 			}
 
 			"syntax" {
-				syntax(lex) shouldBe parse
+				syntax(lex).normaliseWhitespace() shouldBe parse
 			}
 
 			"! code gen" {

@@ -15,7 +15,7 @@ class LexerException(msg: String): Exception(msg)
 
 private data class Token(val name: String, val value: String?, val position: Position) {
 	override fun toString(): String =
-		"%5d  %5d   %s %s".format(position.line, position.col, name, value ?: "")
+		"%5d  %5d   %s %s".format(position.line, position.col, name, value ?: "").trimEnd()
 }
 
 // lines and columns are 1-indexed

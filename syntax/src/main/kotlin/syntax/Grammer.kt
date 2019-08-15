@@ -5,8 +5,6 @@ import syntax.pc.*
 
 object Grammer {
 
-	//TODO precedence
-
 	private fun ParserContext.identifier(): Parser<AST.Expression.Identifier> =
 		t(Identifier).map { AST.Expression.Identifier(it.value) }
 
@@ -16,14 +14,30 @@ object Grammer {
 	private val primary: Parser<AST.Expression> by lazy {
 		context("Primitive") {
 			identifier() or
+
 			t(Integer).map { AST.Expression.Integer(it.value.toInt()) } or
+
 			t(LeftParen).skip() + lazy { expr.value } + t(RightParen).skip() or
-			(t(OpAdd) or t(OpSubtract) or t(OpNot)).map { TODO() } + lazy { primary.value }
+
+			((t(OpAdd) or t(OpSubtract) or t(OpNot))+ lazy { primary.value }).map { (op, expr) ->
+				when (op.type) {
+					OpAdd -> expr
+					OpSubtract -> AST.Expression.Negate(expr)
+					OpNot -> AST.Expression.Not(expr)
+					else -> error("Unknown token type matched")
+				}
+			}
 		}
 	}
 
-	private val multiplicationExpr: Parser<AST.Expression> =
-		primary //TODO mutl
+	private val multiplicationExpr: Parser<AST.Expression> = context("Multiplication Expression") {
+		(primary + many(
+			(t(OpMultiply).map { AST.Operator.Multiply } or
+					t(OpDivide).map { AST.Operator.Divide } or
+					t(OpMod).map { AST.Operator.Mod }
+					) + primary
+		)).mapBiExpressions()
+	}
 
 	private val additionExpr: Parser<AST.Expression> = context("Addition Expression") {
 		(multiplicationExpr + many(
@@ -31,13 +45,7 @@ object Grammer {
 					t(OpAdd).map { AST.Operator.Add } or
 							t(OpSubtract).map { AST.Operator.Subtract }
 					) + multiplicationExpr
-		)).map { (left, rights) ->
-			if (rights.isEmpty()) left
-			//TODO foldLeft or foldRight?
-			else rights.fold(left) { l, (op, r) ->
-				AST.Expression.BiExpression(op, l, r)
-			}
-		}
+		)).mapBiExpressions()
 	}
 
 	private val relationalExpr: Parser<AST.Expression> = context("Relational Expression") {
@@ -48,14 +56,14 @@ object Grammer {
 					t(OpGreater).map { AST.Operator.Greater } or
 					t(OpGreaterEqual).map { AST.Operator.GreaterEqual }
 					) + additionExpr
-		)).map { (left, right) ->
-			if (right == null) left
-			else AST.Expression.BiExpression(right.first, left, right.second)
-		}
+		)).mapBiExpression()
 	}
 
-	private val equalityExpr: Parser<AST.Expression> =
-		relationalExpr //TODO equals
+	private val equalityExpr: Parser<AST.Expression> = context("Equality expression") {
+		(relationalExpr + optional(
+			(t(OpEqual).map { AST.Operator.Equal } or t(OpNotEqual).map { AST.Operator.NotEqual }) + relationalExpr
+		)).mapBiExpression()
+	}
 
 	private val andExpr: Parser<AST.Expression> = equalityExpr //TODO and
 
@@ -85,9 +93,9 @@ object Grammer {
 			}
 
 	private val stmt: Parser<AST.Statement> by lazy {
-				context("Empty Statement") {
-					t(Semicolon).map { TODO() }
-				} or
+//				context("Empty Statement") {
+//					t(Semicolon).map { TODO() }
+//				} or
 
 				context("Assignment") {
 					(identifier() + t(OpAssign).skip() + lazy { expr.value } + t(Semicolon).skip())
@@ -101,7 +109,7 @@ object Grammer {
 				context("If") {
 					(t(KeywordIf).skip() + parenExpr + lazy { stmt.value } + optional(
 						t(KeywordElse).skip() + lazy { stmt.value }
-					)).map { TODO() }
+					)).map { (condIfBody, elseBody) -> AST.Statement.If(condIfBody.first, condIfBody.second, elseBody) }
 				} or
 
 				context("Print") {
@@ -111,8 +119,7 @@ object Grammer {
 				} or
 
 				context("Putc") {
-					(t(KeywordPutc).skip() + parenExpr)
-						.map { TODO() }
+					(t(KeywordPutc).skip() + parenExpr + t(Semicolon).skip()).map { AST.Statement.Prtc(it) }
 				} or
 
 				context("Block") {
@@ -128,6 +135,21 @@ object Grammer {
 		seq.fold<AST.Statement, AST.Statement>(AST.Statement.EMPTY) { l, r ->
 			AST.Statement.Sequence(l, r)
 		}
+
+
+	private fun Parser<Pair<AST.Expression, Pair<AST.Operator, AST.Expression>?>>.mapBiExpression(): Parser<AST.Expression> =
+		this.map { (left, right) ->
+			if (right == null) left
+			else AST.Expression.BiExpression(right.first, left, right.second)
+		}
+
+	private fun Parser<Pair<AST.Expression, List<Pair<AST.Operator, AST.Expression>>>>.mapBiExpressions(): Parser<AST.Expression> = this.map { (left, rights) ->
+			if (rights.isEmpty()) left
+			//TODO foldLeft or foldRight?
+			else rights.fold(left) { l, (op, r) ->
+				AST.Expression.BiExpression(op, l, r)
+			}
+	}
 
 	val parser: Parser<AST> = context("Statement List") {
 		stmtList + t(EndOfInput).skip()

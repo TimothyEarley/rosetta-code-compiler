@@ -8,31 +8,12 @@ sealed class ParserState<out T> {
 		val result: T
 	) : ParserState<T>()
 
-	sealed class Error(msgBuilder: () -> String) : ParserState<Nothing>() {
-		val msg: String by lazy(msgBuilder)
+	data class Error(val context: String, val expected: Token.Type, val actual: Token) : ParserState<Nothing>() {
+		val msg: String by lazy { "(${actual.line}, ${actual.col}) $context: Expecting '${expected.findSymbol(null)}', found '${actual.type.findSymbol(actual)}'\n" }
 
-		data class Expected(val context: String, val expected: Token.Type, val actual: Token) :
-			Error({ "Expected $expected but got $actual" })
-
-		data class Neither(val options: List<Expected>) : Error({
-			options.maxWith(
-					compareBy({ it.actual.line }, { it.actual.col })
-				)!!
-				.run { "(${actual.line}, ${actual.col}) $context: Expecting '${expected.findSymbol(null)}', found '${actual.type.findSymbol(actual)}'\n" }
-		})
-
-		infix fun neither(other: Error): Error = Neither(
-			when (this) {
-				is Neither -> when (other) {
-					is Neither -> options + other.options
-					is Expected -> options + other
-				}
-				is Expected -> when (other) {
-					is Neither -> other.options + this
-					is Expected -> listOf(this, other)
-				}
-			}
-		)
+		infix fun neither(other: Error): Error = listOf(this, other).maxWith(
+			compareBy({ it.actual.line }, { it.actual.col })
+		)!!
 	}
 }
 

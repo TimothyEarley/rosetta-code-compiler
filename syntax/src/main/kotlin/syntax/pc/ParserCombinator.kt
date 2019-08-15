@@ -13,7 +13,7 @@ data class ParserInputState(
 		result = tokens.first()
 	)
 
-	fun ParserContext.parseError(expected: Token.Type) = ParserState.Error.Expected(context, expected, tokens.first()).let {
+	fun ParserContext.parseError(expected: Token.Type) = ParserState.Error(context, expected, tokens.first()).let {
 		if (skippedError != null) it neither skippedError
 		else it
 	}
