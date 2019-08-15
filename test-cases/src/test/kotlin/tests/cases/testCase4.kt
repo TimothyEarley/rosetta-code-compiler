@@ -50,12 +50,12 @@ Datasize: 0 Strings: 2
 "\nHello World\nGood Bye\nok\n"
 "Print a slash n - \\n.\n"
    0 push  42
-   5 prti
-   6 push  0
-  11 prts
-  12 push  1
-  17 prts
-  18 halt
+   1 prti
+   2 push  0
+   3 prts
+   4 push  1
+   5 prts
+   6 halt
 ""","""
 42
 Hello World

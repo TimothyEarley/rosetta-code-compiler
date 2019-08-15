@@ -262,8 +262,13 @@ String        "\n"
 ;
 ;
 ""","""
+Datasize: 0 Strings: 1
 "\n"
    0 push  5
+   1 neg
+   2 neg
+   3 neg
+   4 neg
    5 neg
    6 neg
    7 neg
@@ -293,36 +298,32 @@ String        "\n"
   31 neg
   32 neg
   33 neg
-  34 neg
-  35 neg
-  36 neg
-  37 neg
-  38 prti
-  39 push  0
+  34 prti
+  35 push  0
+  36 prts
+  37 push  3
+  38 push  2
+  39 add
+  40 push  2
+  41 mul
+  42 prti
+  43 push  0
   44 prts
-  45 push  3
-  50 push  2
-  55 add
-  56 push  2
-  61 mul
-  62 prti
-  63 push  0
-  68 prts
-  69 push  1
-  74 jz     (56) 131
-  79 push  1
-  84 jz     (46) 131
-  89 push  1
-  94 jz     (36) 131
-  99 push  1
- 104 jz     (26) 131
- 109 push  1
- 114 jz     (16) 131
- 119 push  15
- 124 prti
- 125 push  0
- 130 prts
- 131 halt
+  45 push  1
+  46 jz     (12) 59
+  47 push  1
+  48 jz     (10) 59
+  49 push  1
+  50 jz     (8) 59
+  51 push  1
+  52 jz     (6) 59
+  53 push  1
+  54 jz     (4) 59
+  55 push  15
+  56 prti
+  57 push  0
+  58 prts
+  59 halt
 ""","""
 -5
 10

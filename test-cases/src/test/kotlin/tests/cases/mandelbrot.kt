@@ -399,109 +399,109 @@ Identifier     y_step
 ""","""
 Datasize: 15 Strings: 0
     0 push  420
-    5 neg
-    6 store [0]
-   11 push  300
-   16 store [1]
-   21 push  300
-   26 store [2]
-   31 push  300
-   36 neg
-   37 store [3]
-   42 push  7
-   47 store [4]
-   52 push  15
-   57 store [5]
-   62 push  200
-   67 store [6]
-   72 fetch [2]
-   77 store [7]
-   82 fetch [7]
-   87 fetch [3]
-   92 gt
-   93 jz     (329) 423
-   98 fetch [0]
-  103 store [8]
-  108 fetch [8]
-  113 fetch [1]
-  118 lt
-  119 jz     (276) 396
-  124 push  0
-  129 store [9]
-  134 push  0
-  139 store [10]
-  144 push  32
-  149 store [11]
-  154 push  0
-  159 store [12]
-  164 fetch [12]
-  169 fetch [6]
-  174 lt
-  175 jz     (193) 369
-  180 fetch [10]
-  185 fetch [10]
-  190 mul
-  191 push  200
-  196 div
-  197 store [13]
-  202 fetch [9]
-  207 fetch [9]
-  212 mul
-  213 push  200
-  218 div
-  219 store [14]
-  224 fetch [13]
-  229 fetch [14]
-  234 add
-  235 push  800
-  240 gt
-  241 jz     (56) 298
-  246 push  48
-  251 fetch [12]
-  256 add
-  257 store [11]
-  262 fetch [12]
-  267 push  9
-  272 gt
-  273 jz     (14) 288
-  278 push  64
-  283 store [11]
-  288 fetch [6]
-  293 store [12]
-  298 fetch [10]
-  303 fetch [9]
-  308 mul
-  309 push  100
-  314 div
-  315 fetch [7]
-  320 add
-  321 store [9]
-  326 fetch [13]
-  331 fetch [14]
-  336 sub
-  337 fetch [8]
-  342 add
-  343 store [10]
-  348 fetch [12]
-  353 push  1
-  358 add
-  359 store [12]
-  364 jmp    (-201) 164
-  369 fetch [11]
-  374 prtc
-  375 fetch [8]
-  380 fetch [4]
-  385 add
-  386 store [8]
-  391 jmp    (-284) 108
-  396 push  10
-  401 prtc
-  402 fetch [7]
-  407 fetch [5]
-  412 sub
-  413 store [7]
-  418 jmp    (-337) 82
-  423 halt
+    1 neg
+    2 store [0]
+    3 push  300
+    4 store [1]
+    5 push  300
+    6 store [2]
+    7 push  300
+    8 neg
+    9 store [3]
+   10 push  7
+   11 store [4]
+   12 push  15
+   13 store [5]
+   14 push  200
+   15 store [6]
+   16 fetch [2]
+   17 store [7]
+   18 fetch [7]
+   19 fetch [3]
+   20 gt
+   21 jz     (81) 103
+   22 fetch [0]
+   23 store [8]
+   24 fetch [8]
+   25 fetch [1]
+   26 lt
+   27 jz     (68) 96
+   28 push  0
+   29 store [9]
+   30 push  0
+   31 store [10]
+   32 push  32
+   33 store [11]
+   34 push  0
+   35 store [12]
+   36 fetch [12]
+   37 fetch [6]
+   38 lt
+   39 jz     (49) 89
+   40 fetch [10]
+   41 fetch [10]
+   42 mul
+   43 push  200
+   44 div
+   45 store [13]
+   46 fetch [9]
+   47 fetch [9]
+   48 mul
+   49 push  200
+   50 div
+   51 store [14]
+   52 fetch [13]
+   53 fetch [14]
+   54 add
+   55 push  800
+   56 gt
+   57 jz     (12) 70
+   58 push  48
+   59 fetch [12]
+   60 add
+   61 store [11]
+   62 fetch [12]
+   63 push  9
+   64 gt
+   65 jz     (2) 68
+   66 push  64
+   67 store [11]
+   68 fetch [6]
+   69 store [12]
+   70 fetch [10]
+   71 fetch [9]
+   72 mul
+   73 push  100
+   74 div
+   75 fetch [7]
+   76 add
+   77 store [9]
+   78 fetch [13]
+   79 fetch [14]
+   80 sub
+   81 fetch [8]
+   82 add
+   83 store [10]
+   84 fetch [12]
+   85 push  1
+   86 add
+   87 store [12]
+   88 jmp    (-53) 36
+   89 fetch [11]
+   90 prtc
+   91 fetch [8]
+   92 fetch [4]
+   93 add
+   94 store [8]
+   95 jmp    (-70) 24
+   96 push  10
+   97 prtc
+   98 fetch [7]
+   99 fetch [5]
+  100 sub
+  101 store [7]
+  102 jmp    (-83) 18
+  103 halt
 ""","""
 1111111111111111111111122222222222222222222222222222222222222222222222222222222222222222222222222211111
 1111111111111111111122222222222222222222222222222222222222222222222222222222222222222222222222222222211

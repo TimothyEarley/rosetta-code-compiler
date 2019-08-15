@@ -91,25 +91,25 @@ Identifier     a
 ""","""
 Datasize: 3 Strings: 0
     0 push  1071
-    5 store [0]
-   10 push  1029
-   15 store [1]
-   20 fetch [1]
-   25 push  0
-   30 ne
-   31 jz     (45) 77
-   36 fetch [1]
-   41 store [2]
-   46 fetch [0]
-   51 fetch [1]
-   56 mod
-   57 store [1]
-   62 fetch [2]
-   67 store [0]
-   72 jmp    (-53) 20
-   77 fetch [0]
-   82 prti
-   83 halt
+    1 store [0]
+    2 push  1029
+    3 store [1]
+    4 fetch [1]
+    5 push  0
+    6 ne
+    7 jz     (9) 17
+    8 fetch [1]
+    9 store [2]
+   10 fetch [0]
+   11 fetch [1]
+   12 mod
+   13 store [1]
+   14 fetch [2]
+   15 store [0]
+   16 jmp    (-11) 4
+   17 fetch [0]
+   18 prti
+   19 halt
 ""","""
 
 """

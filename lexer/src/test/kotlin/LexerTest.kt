@@ -12,8 +12,8 @@ class LexerTest : StringSpec({
 			ifprint
 
 		""".trimIndent()) shouldBe """
-    1     1 Identifier ifprint
-    2     1 End_of_input 
+    1      1   Identifier ifprint
+    2      1   End_of_input
 """.trim('\n')
 	}
 

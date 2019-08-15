@@ -28,8 +28,8 @@ String "Hello, World!\n"
 Datasize: 0 Strings: 1
 "Hello, World!\n"
    0 push  0
-   5 prts
-   6 halt
+   1 prts
+   2 halt
 """, """
 Hello, World!
 """

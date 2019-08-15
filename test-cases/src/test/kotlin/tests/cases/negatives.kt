@@ -140,41 +140,42 @@ Prts
 String        "\n"
 ;
 ""","""
+Datasize: 2 Strings: 1
 "\n"
    0 push  1
-   5 neg
-   6 push  1
-  11 neg
-  12 push  5
-  17 push  15
-  22 mul
-  23 mul
-  24 push  10
-  29 div
-  30 mul
-  31 store [0]
-  36 fetch [0]
-  41 prti
-  42 push  0
-  47 prts
-  48 fetch [0]
-  53 neg
-  54 store [1]
-  59 fetch [1]
-  64 prti
-  65 push  0
-  70 prts
-  71 fetch [1]
-  76 neg
-  77 prti
-  78 push  0
-  83 prts
-  84 push  1
-  89 neg
-  90 prti
-  91 push  0
-  96 prts
-  97 halt
+   1 neg
+   2 push  1
+   3 neg
+   4 push  5
+   5 push  15
+   6 mul
+   7 mul
+   8 push  10
+   9 div
+  10 mul
+  11 store [0]
+  12 fetch [0]
+  13 prti
+  14 push  0
+  15 prts
+  16 fetch [0]
+  17 neg
+  18 store [1]
+  19 fetch [1]
+  20 prti
+  21 push  0
+  22 prts
+  23 fetch [1]
+  24 neg
+  25 prti
+  26 push  0
+  27 prts
+  28 push  1
+  29 neg
+  30 prti
+  31 push  0
+  32 prts
+  33 halt
 ""","""
 7
 -7

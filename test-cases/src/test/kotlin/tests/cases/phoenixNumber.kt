@@ -43,12 +43,12 @@ String "\n"
 		Datasize: 1 Strings: 1
 		"\n"
 		   0 push  142857
-		   5 store [0]
-		  10 fetch [0]
-		  15 prti
-		  16 push  0
-		  21 prts
-		  22 halt
+		   1 store [0]
+		   2 fetch [0]
+		   3 prti
+		   4 push  0
+		   5 prts
+		   6 halt
 	""".trimIndent(),"""
 		142857
 	""".trimIndent()
