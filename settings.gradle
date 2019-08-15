@@ -1,3 +1,4 @@
 rootProject.name = 'rosetta-code-compiler'
 
 include 'lexer'
+include 'syntax'

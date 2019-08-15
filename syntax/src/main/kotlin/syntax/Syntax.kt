@@ -1,0 +1,22 @@
+package syntax
+
+import syntax.pc.fold
+import syntax.pc.run
+import java.io.File
+
+
+fun main(args: Array<String>) {
+	require(args.size == 1) { "Please pass a file as the first argument" }
+	val source = File(args[0]).readText()
+	println(syntax(source))
+}
+
+
+@Throws()
+fun syntax(input: String): String {
+	val tokens = input.lineSequence().map(::readToken)
+	return Grammer.parser.run(tokens).fold(
+		{ throw error(it.msg) },
+		AST::toFlatString
+	)
+}

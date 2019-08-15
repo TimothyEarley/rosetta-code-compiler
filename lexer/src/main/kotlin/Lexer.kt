@@ -1,3 +1,5 @@
+package lexer
+
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -74,8 +76,8 @@ private class Lexer(private val source: String) {
 		position = markedPosition ?: return
 	}
 
-    fun token(name: String, value: String? = null) = Token(name, value, markedPosition!!)
-    fun tokenRegexValue(name: String) = token(name, match!!)
+    fun token(name: String, value: String? = null) = Token(name, value, markedPosition ?: error("No position marked"))
+    fun tokenRegexValue(name: String) = token(name, match ?: error("No match set"))
 
     // unsafe
     private fun skip(length: Int) {
@@ -99,6 +101,7 @@ private fun Lexer.parse(): List<Token> {
 		mark()
         val next = when {
             match(' ') -> null
+			match('\t') -> null
             match('\n') -> null
 
             match("/*") -> {

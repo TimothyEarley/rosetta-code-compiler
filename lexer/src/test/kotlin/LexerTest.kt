@@ -1,3 +1,5 @@
+package lexer
+
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldThrow
 import io.kotlintest.specs.AbstractAnnotationSpec
