@@ -14,7 +14,8 @@ fun lexer(source: String): String = Lexer(source).parse().joinToString(separator
 class LexerException(msg: String): Exception(msg)
 
 private data class Token(val name: String, val value: String?, val position: Position) {
-    override fun toString() = "${position.line} ${position.col} $name${if (value != null) " $value" else ""}"
+	override fun toString(): String =
+		"%5d  %5d   %s %s".format(position.line, position.col, name, value ?: "")
 }
 
 // lines and columns are 1-indexed

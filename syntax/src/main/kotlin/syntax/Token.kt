@@ -40,7 +40,7 @@ data class Token(val type: Type, val value: String, val line: Int, val col: Int)
 }
 
 fun readToken(source: String): Token {
-	val split = source.split(" ", limit = 4)
+	val split = source.trim().split("\\s+".toRegex(), limit = 4)
 	val (line, col, type, value) = if (split.size == 4) split else split + ""
 	val l = line.toInt()
 	val c = col.toInt()

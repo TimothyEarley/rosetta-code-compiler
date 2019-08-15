@@ -36,46 +36,4 @@ import lexer.lexer
 
 class SyntaxTest : StringSpec({
 
-	"test 1" {
-		syntax(lexer("""
-			count = 1;
-			while (count < 10) {
-				print("count is: ", count, "\n");
-				count = count + 1;
-			}
-		""".trimIndent())) shouldBe """
-			Sequence
-			Sequence
-			;
-			Assign
-			Identifier count
-			Integer 1
-			While
-			Less
-			Identifier count
-			Integer 10
-			Sequence
-			Sequence
-			;
-			Sequence
-			Sequence
-			Sequence
-			;
-			Prts
-			String "count is: "
-			;
-			Prti
-			Identifier count
-			;
-			Prts
-			String "\n"
-			;
-			Assign
-			Identifier count
-			Add
-			Identifier count
-			Integer 1
-		""".trimIndent()
-	}
-
 })

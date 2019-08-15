@@ -1,17 +1,21 @@
 package syntax
 
+import javax.swing.plaf.nimbus.State
+
 sealed class AST {
 
-	sealed class Statement(val type: String, val left: AST, val right: AST?) : AST() {
+	sealed class Statement(val type: String, val left: AST, val right: AST) : AST() {
 		class Sequence(left: Statement, right: Statement): Statement("Sequence", left, right)
+
+		object EMPTY : Statement(";", EMPTY, EMPTY)
 
 		class Assign(
 			identifier: Expression.Identifier,
 			expression: Expression
 		): Statement("Assign", identifier, expression)
 
-		data class Prts(val string: Expression.StringExpr): Statement("Prts", string, null)
-		data class Prti(val expr: Expression): Statement("Prti", expr, null)
+		data class Prts(val string: Expression.StringExpr): Statement("Prts", string, EMPTY)
+		data class Prti(val expr: Expression): Statement("Prti", expr, EMPTY)
 		data class While(val cond: Expression, val body: Statement): Statement("While", cond, body)
 	}
 
@@ -36,8 +40,8 @@ sealed class AST {
 	}
 }
 
-fun AST?.toFlatString(): String = when (this) {
-	null -> ";\n"
+fun AST.toFlatString(): String = when (this) {
+	is AST.Statement.EMPTY -> "$type\n"
 	is AST.Statement -> "$type\n${left.toFlatString()}${right.toFlatString()}"
 	is AST.Expression.Identifier -> "Identifier $name\n"
 	is AST.Expression.Integer -> "Integer $value\n"

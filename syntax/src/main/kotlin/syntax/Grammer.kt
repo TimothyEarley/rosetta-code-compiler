@@ -74,8 +74,7 @@ object Grammer {
 	private val prtList: Parser<AST.Statement> =
 		(prtSingle + many(t(Comma).skip() + prtSingle))
 			.map { (head, tail) ->
-				if (tail.isEmpty()) head
-				else statementSeq(head, tail)
+				statementSeq(listOf(head) + tail)
 			}
 
 	private val stmt: Parser<AST.Statement> by lazy {
@@ -100,10 +99,11 @@ object Grammer {
 	}
 
 	private val stmtList: Parser<AST.Statement> =
-		many(stmt).map { statementSeq(it.first(), it.drop(1)) }
+		many(stmt).map { statementSeq(it) }
 
-	private fun statementSeq(head: AST.Statement, tail: List<AST.Statement>): AST.Statement =
-		tail.fold(head) { l, r ->
+	private fun statementSeq(seq: List<AST.Statement>): AST.Statement =
+		//the spec says generate more sequences than necessary, so that's what I will do:
+		seq.fold<AST.Statement, AST.Statement>(AST.Statement.EMPTY) { l, r ->
 			AST.Statement.Sequence(l, r)
 		}
 
