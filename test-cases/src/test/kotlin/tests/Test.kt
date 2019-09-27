@@ -26,7 +26,7 @@ fun testCase(
 	lex.trim('\n').normaliseWhitespace(),
 	parse.trimStart('\n').normaliseWhitespace(),
 	gen?.trim('\n')?.normaliseWhitespace(),
-	out?.trim('\n')
+	out?.trimStart('\n')
 )
 
 class Test : FreeSpec({
@@ -54,11 +54,11 @@ class Test : FreeSpec({
 			}
 
 			"code gen".config(enabled = gen != null) {
-				gen(parse).normaliseWhitespace() shouldBe gen
+				gen(parse).normaliseWhitespace() shouldBe gen!!
 			}
 
-			"! out".config(enabled = out != null) {
-				TODO()
+			"out".config(enabled = gen != null && out != null) {
+				vm.run(gen!!) shouldBe out!!
 			}
 		}
 	}

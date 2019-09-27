@@ -14,14 +14,6 @@ fun gen(input: String): String {
 	val ast = readAST(input.lineSequence().filterNot(String::isBlank))
 
 	return (ast.compile() + "halt").print()
-
-	/*
-	The first line is the header: Size of data, and number of constant strings.
-size of data is the number of 32-bit unique variables used. In this example, one variable, count
-number of constant strings is just that - how many there are
-After that, the constant strings
-Finally, the assembly code
-	 */
 }
 
 fun readAST(lines: Sequence<String>): AST {

@@ -50,6 +50,6 @@ String "\n"
 		   5 prts
 		   6 halt
 	""".trimIndent(),"""
-		142857
-	""".trimIndent()
+142857
+"""
 )
